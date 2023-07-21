@@ -19,7 +19,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:url',
-          content: 'https://clemtacs.vercel.app/',
+          content: 'https://clemtacs.gwyndev.com/',
         },
         {
           property: 'og:type',
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:image',
-          content: 'https://clemtacs.vercel.app/logo.webp',
+          content: 'https://clemtacs.gwyndev.com/logo.webp',
         },
         {
           name: 'twitter:card',
@@ -40,11 +40,11 @@ export default defineNuxtConfig({
         },
         {
           property: 'twitter:domain',
-          content: 'clemtacs.vercel.app',
+          content: 'clemtacs.gwyndev.com',
         },
         {
           property: 'twitter:url',
-          content: 'https://clemtacs.vercel.app/',
+          content: 'https://clemtacs.gwyndev.com/',
         },
         {
           name: 'twitter:description',
@@ -53,7 +53,7 @@ export default defineNuxtConfig({
         },
         {
           name: 'twitter:image',
-          content: 'https://clemtacs.vercel.app/logo.webp',
+          content: 'https://clemtacs.gwyndev.com/logo.webp',
         },
       ],
     },
