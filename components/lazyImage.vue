@@ -29,7 +29,7 @@
 </script>
 
 <template>
-  <div class="w-fit h-fit">
+  <div :style="`width:${props.width}px;height:${props.height}px;`">
     <div
       v-if="props.src === ''"
       class="w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-gray-100 to-transparent"
@@ -42,6 +42,7 @@
       :src="props.src"
       :alt="props.alt"
       format="webp"
+      class="w-full h-full object-cover"
     />
   </div>
 </template>
