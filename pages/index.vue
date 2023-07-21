@@ -141,6 +141,7 @@
         </li>
         <ClientOnly>
           <li
+            v-if="!store.state.isFetching"
             v-for="product in store.state.products"
             :key="product"
             @mouseenter="hoveringElement = product"
@@ -170,17 +171,17 @@
                 ]"
               >
                 <button
-                  class="m-4 absolute transition-all duration-200 hover:scale-110 active:scale-90"
+                  class="m-4 w-9 h-9 absolute transition-all duration-200 hover:scale-110 active:scale-90"
                 >
                   <IconsCart
-                    class="w-10 h-10 p-2 stroke-white hover:stroke-primary transition-all duration-200 bg-black/80 rounded-md"
+                    class="w-full h-full p-2 stroke-white hover:stroke-primary transition-all duration-200 bg-black/80 rounded-md"
                   />
                 </button>
                 <button
-                  class="m-4 mb-16 absolute transition-all duration-200 hover:scale-110 active:scale-90"
+                  class="m-4 w-9 h-9 mb-16 absolute transition-all duration-200 hover:scale-110 active:scale-90"
                 >
                   <IconsWishlist
-                    class="w-10 h-10 p-2 stroke-white hover:stroke-red-500 transition-all duration-200 bg-black/80 rounded-md"
+                    class="w-full h-full p-2 stroke-white hover:stroke-red-500 transition-all duration-200 bg-black/80 rounded-md"
                   />
                 </button>
               </div>
@@ -192,7 +193,17 @@
               <p class="text-sm text-gray-500 line-clamp-2">
                 {{ product.brand }}
               </p>
-              <p>{{ product.rating }}</p>
+              <div class="my-2 flex items-center">
+                <div class="w-0">
+                  <ratingStars
+                    :rate="product.rating"
+                    class="scale-75"
+                  />
+                </div>
+                <p class="text-gray-400 text-sm ml-24">
+                  {{ product.rating.toFixed(1) }}
+                </p>
+              </div>
               <div class="flex justify-between items-center">
                 <p class="font-semibold text-sm text-gray-400 line-clamp-1">
                   {{ product.stock + ' In Stock' }}
