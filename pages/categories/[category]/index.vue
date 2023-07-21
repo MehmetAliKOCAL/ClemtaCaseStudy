@@ -7,7 +7,7 @@
   });
 
   definePageMeta({
-    title: 'See Products',
+    title: 'Inspect Category',
   });
 </script>
 <template>
