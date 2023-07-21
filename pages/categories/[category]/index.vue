@@ -1,16 +1,13 @@
 <script setup>
   const route = useRoute();
   const store = useStore();
-  const selectedCategory = route.params.category;
-  onBeforeMount(() => {
-    store.commit('getProductsOfCategory', selectedCategory);
+
+  onMounted(() => {
+    store.commit('getProductsOfCategory', route.params.category);
   });
 
-  function capitalize(string) {
-    return string.slice(0, 1).toUpperCase() + string.slice(1);
-  }
   definePageMeta({
-    title: capitalize(selectedCategory),
+    title: 'See Products',
   });
 </script>
 <template>
