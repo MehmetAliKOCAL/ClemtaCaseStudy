@@ -18,6 +18,12 @@ export default {
           '100%': { transform: 'translateX(100%)' },
         },
       },
+      colors: {
+        primary: '#ff8b14',
+      },
+      borderWidth: {
+        1: '1px',
+      },
     },
   },
 };
