@@ -1,0 +1,142 @@
+<script setup>
+  const toast = useToast();
+  const showPassword = ref(false);
+  const registrationData = reactive({
+    name: '',
+    surname: '',
+    email: '',
+    password: '',
+  });
+  const passwordCorrection = ref('');
+
+  function isDataValid() {
+    const isValid =
+      !Object.values(registrationData).includes('') &&
+      registrationData.password === passwordCorrection.value;
+    if (!isValid) toast.error('false data');
+    return isValid;
+  }
+
+  async function register() {
+    if (isDataValid()) {
+      const response = await $fetch('/api/register', {
+        method: 'POST',
+        body: registrationData,
+      });
+
+      if (response === '') useRouter().push('/login');
+    }
+  }
+
+  definePageMeta({
+    title: 'Register',
+  });
+</script>
+
+<template>
+  <main
+    class="px-6 bg-[url('/bgTessellation.webp')] min-w-screen min-h-screen flex justify-center items-center"
+  >
+    <form
+      @submit.prevent
+      @keypress.enter="register()"
+      class="flex flex-col gap-y-4 w-[500px] bg-white p-14 rounded-[4px] shadow-lg shadow-black/20"
+    >
+      <h1 class="self-center text-2xl font-black">Sign Up</h1>
+      <p class="text-xs mb-6 text-center">
+        Create an account and start shopping!
+      </p>
+      <div class="flex flex-col">
+        <label
+          for="firstName"
+          class="text-sm text-gray-500"
+          >First Name</label
+        >
+        <input
+          id="firstName"
+          type="text"
+          autocomplete="name"
+          v-model="registrationData.name"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label
+          for="lastName"
+          class="text-sm text-gray-500"
+          >Last Name</label
+        >
+        <input
+          id="lastName"
+          type="text"
+          autocomplete="name"
+          v-model="registrationData.surname"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label
+          for="email"
+          class="text-sm text-gray-500"
+          >Email</label
+        >
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          v-model="registrationData.email"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label
+          for="password"
+          class="text-sm text-gray-500"
+          >Password</label
+        >
+        <input
+          id="password"
+          autocomplete="new-password"
+          v-model="registrationData.password"
+          :type="showPassword ? 'text' : 'password'"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label
+          for="passwordCorrection"
+          class="text-sm text-gray-500"
+          >Password Correction</label
+        >
+        <input
+          id="passwordCorrection"
+          autocomplete="new-password"
+          v-model="passwordCorrection"
+          :type="showPassword ? 'text' : 'password'"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+        />
+        <button
+          @click="showPassword = !showPassword"
+          class="w-fit text-xs mt-2 self-end text-gray-500"
+        >
+          {{ showPassword === false ? 'Show Password' : 'Hide Password' }}
+        </button>
+      </div>
+      <button
+        type="submit"
+        @click="register()"
+        class="bg-primary text-white py-3 rounded-md hover:scale-95 active:scale-100 transform-all duration-200"
+      >
+        Register
+      </button>
+      <p class="text-xs text-gray-500">
+        Already have an account?
+        <NuxtLink
+          to="/login"
+          class="text-primary"
+          >Login</NuxtLink
+        >
+      </p>
+    </form>
+  </main>
+</template>
