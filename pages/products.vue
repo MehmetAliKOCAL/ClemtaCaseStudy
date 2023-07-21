@@ -34,6 +34,10 @@
 
     return allPages;
   }
+
+  definePageMeta({
+    title: 'All Products',
+  });
 </script>
 
 <template>
