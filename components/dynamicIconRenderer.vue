@@ -8,7 +8,7 @@
   });
 
   function dynamicImport() {
-    return defineAsyncComponent(() => import(`./Icons/${props.iconName}.vue`));
+    return defineAsyncComponent(() => import(`./icons/${props.iconName}.vue`));
   }
 </script>
 
