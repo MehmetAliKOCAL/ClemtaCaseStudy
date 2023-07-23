@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nuxt/image": "^1.0.0-rc.1",
-    "@vueuse/core": "^10.2.1",
+    "nuxt-rating": "^0.0.15",
     "sweetalert2": "^11.7.18",
     "vue-toastification": "^2.0.0-rc.5",
     "vuex": "^4.1.0"
