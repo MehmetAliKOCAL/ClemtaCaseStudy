@@ -43,3 +43,11 @@ html {
 .rating-progressBar::-moz-progress-bar {
   background-color: #ff8b14;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}

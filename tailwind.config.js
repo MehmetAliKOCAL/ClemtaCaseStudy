@@ -23,6 +23,20 @@ export default {
       },
       borderWidth: {
         1: '1px',
+        5: '5px',
+      },
+      minWidth: {
+        40: '10rem',
+        52: '13rem',
+      },
+      maxWidth: {
+        80: '20rem',
+      },
+      outlineWidth: {
+        6: '6px',
+      },
+      lineHeight: {
+        5.5: '1.375rem',
       },
     },
   },
