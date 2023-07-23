@@ -2,7 +2,7 @@
   const store = useStore();
   const searchQuery = ref('');
   const hoveringElement = ref(null);
-  const showFiltersMenu = ref(false);
+  const isFiltersMenuVisible = ref(false);
   const products = () => store.state.products;
   const categories = () => store.state.categories;
   const isFetching = () => store.state.isFetching;
@@ -57,6 +57,19 @@
     },
   ];
 
+  function closeMenuRatherRedirectBack() {
+    if (isFiltersMenuVisible.value) {
+      isFiltersMenuVisible.value = false;
+      navigator.preventDefault();
+    }
+  }
+
+  onMounted(() => {
+    window.addEventListener('popstate', closeMenuRatherRedirectBack());
+  });
+  onBeforeRouteLeave(() => {
+    window.removeEventListener('popstate', closeMenuRatherRedirectBack());
+  });
   onBeforeMount(() => {
     store.commit('getAllProducts');
   });
@@ -223,17 +236,17 @@
       </div>
 
       <button
-        @click="showFiltersMenu = !showFiltersMenu"
-        class="px-8 py-3 w-full md:hidden text-primary font-medium flex justify-center items-center gap-x-4 rounded-xl border shadow bg-white hover:bg-primary hover:text-white transition-all duration-300"
+        @click="isFiltersMenuVisible = !isFiltersMenuVisible"
+        class="px-8 py-3 w-full md:hidden text-primary font-medium flex justify-center items-center gap-x-4 rounded-xl border shadow bg-white hover:bg-primary hover:text-white active:scale-90 transition-all duration-200"
       >
         <IconsFilter />
         Filter Products
       </button>
       <button
-        @click="showFiltersMenu = !showFiltersMenu"
+        @click="isFiltersMenuVisible = !isFiltersMenuVisible"
         class="w-screen h-screen fixed top-0 left-0 bg-black/70 z-[2] transition-all duration-300 md:hidden"
         :class="[
-          showFiltersMenu ? 'visible opacity-100' : 'invisible opacity-0',
+          isFiltersMenuVisible ? 'visible opacity-100' : 'invisible opacity-0',
         ]"
       />
 
@@ -241,7 +254,7 @@
         <aside
           class="z-[3] transition-all duration-300 bg-slate-100 max-md:py-4 max-md:px-6 max-md:w-full max-md:fixed max-md:bottom-0 max-md:left-0 max-md:rounded-t-2xl"
           :class="[
-            !showFiltersMenu
+            !isFiltersMenuVisible
               ? 'max-md:translate-y-full'
               : 'max-md:translate-y-0',
           ]"
@@ -283,7 +296,7 @@
             <div class="space-y-2">
               <h2 class="text-gray-500">Rating</h2>
               <div class="flex flex-col gap-y-2">
-                <div>
+                <div class="max-md:space-y-1">
                   <div
                     v-for="rate in ratingFilters"
                     :key="rate"
@@ -310,7 +323,9 @@
 
             <div class="space-y-2">
               <h2 class="text-gray-500">Categories</h2>
-              <div class="max-md:grid grid-cols-2">
+              <div
+                class="max-md:grid max-md:grid-cols-2 max-md:gap-y-1 max-md:gap-x-4"
+              >
                 <ClientOnly>
                   <div
                     v-for="category in categories()"
