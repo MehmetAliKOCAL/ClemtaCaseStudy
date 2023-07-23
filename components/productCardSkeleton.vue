@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[200px] overflow-hidden rounded-md">
+  <div class="min-w-52 max-w-80 max-md:min-w-40 overflow-hidden rounded-md">
     <div
       class="h-[200px] rounded-md animate-shimmer bg-gradient-to-r from-transparent via-gray-200 to-transparent"
     />

@@ -13,12 +13,12 @@
     width: {
       type: String,
       required: false,
-      default: '250',
+      default: '',
     },
     height: {
       type: String,
       required: false,
-      default: '250',
+      default: '',
     },
     quality: {
       type: String,
@@ -29,7 +29,13 @@
 </script>
 
 <template>
-  <div :style="`width:${props.width}px;height:${props.height}px;`">
+  <div
+    :style="[
+      props.width === '' && props.height === '' && 'aspect-ratio:1/1',
+      props.width !== '' && `width:${props.width}px`,
+      props.height !== '' && `height:${props.height}px`,
+    ]"
+  >
     <div
       v-if="props.src === ''"
       class="w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-gray-100 to-transparent"
@@ -42,6 +48,7 @@
       :src="props.src"
       :alt="props.alt"
       format="webp"
+      loading="lazy"
       class="w-full h-full object-cover"
     />
   </div>
