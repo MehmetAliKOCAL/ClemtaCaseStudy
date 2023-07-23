@@ -259,7 +259,7 @@
               : 'max-md:translate-y-0',
           ]"
         >
-          <h1 class="max-md:text-gray-500">FILTER PRODUCTS</h1>
+          <h1 class="text-gray-400 max-md:text-gray-500">FILTER PRODUCTS</h1>
           <hr
             class="mt-3 mb-4 border-gray-200 max-md:border-primary/50 max-md:border-1"
           />
@@ -366,10 +366,10 @@
               {{ products().length }} Results
             </p>
           </ClientOnly>
-          <ul class="h-full flex flex-wrap gap-4">
+          <ul class="flex flex-wrap gap-4">
             <li
               v-if="products().length === 0 && isFetching() === false"
-              class="px-10 w-full flex flex-col justify-center items-center space-y-4 text-xl font-bold text-gray-400"
+              class="px-10 h-[60vh] w-full flex flex-col justify-center items-center space-y-4 text-xl font-bold text-gray-400"
             >
               <IconsWorkInProgress />
               <p>No related products have been found...</p>
@@ -389,7 +389,7 @@
                 :key="product"
                 @mouseenter="hoveringElement = product"
                 @mouseleave="hoveringElement = null"
-                class="flex-1 h-fit min-w-52 max-w-80 max-md:min-w-40 font-bold bg-white rounded-lg shadow-lg"
+                class="flex-1 min-w-52 max-w-80 max-md:min-w-40 font-bold bg-white rounded-lg shadow-lg"
               >
                 <div class="overflow-hidden rounded-t-lg relative">
                   <lazyImage
