@@ -3,10 +3,10 @@ import { createStore } from 'vuex';
 export const store = createStore({
   state() {
     return {
-      products: [],
-      categories: [],
-      users: [],
       isFetching: false,
+      categories: [],
+      products: [],
+      users: [],
     };
   },
 
@@ -16,6 +16,7 @@ export const store = createStore({
       state.categories = await $fetch('/api/getAllCategories').catch(
         (error) => error
       );
+      this.dispatch('addNamesToCategories');
       state.isFetching = false;
     },
 
@@ -48,6 +49,33 @@ export const store = createStore({
 
     async getUsers(state) {
       console.log(localStorage.getItem('users'));
+    },
+  },
+
+  actions: {
+    async addNamesToCategories() {
+      const categories = this.state.categories;
+      const categoryNames = await this.dispatch(
+        'generateCapitalizedCategoryNames'
+      );
+
+      const namedCategories = {};
+      for (let index = 0; index < categories.length; index++) {
+        namedCategories[index] = {
+          label: categoryNames[index],
+          value: categories[index],
+        };
+      }
+      this.state.categories = namedCategories;
+    },
+
+    async generateCapitalizedCategoryNames() {
+      const categories = this.state.categories;
+      return await Promise.all(
+        categories.map((category) => {
+          return category.split('-').join(' ').capitalize();
+        })
+      );
     },
   },
 });
