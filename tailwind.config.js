@@ -23,6 +23,7 @@ export default {
       },
       borderWidth: {
         1: '1px',
+        3: '3px',
         5: '5px',
       },
       minWidth: {
@@ -37,6 +38,9 @@ export default {
       },
       lineHeight: {
         5.5: '1.375rem',
+      },
+      screens: {
+        xs: '450px',
       },
     },
   },
