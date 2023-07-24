@@ -6,7 +6,6 @@ export const store = createStore({
       isFetching: false,
       categories: [],
       products: [],
-      users: [],
     };
   },
 
@@ -16,66 +15,34 @@ export const store = createStore({
       state.categories = await $fetch('/api/getAllCategories').catch(
         (error) => error
       );
-      this.dispatch('addNamesToCategories');
       state.isFetching = false;
     },
 
-    async getAllProducts(state) {
-      state.isFetching = true;
-      const { products } = await $fetch('/api/getAllProducts').catch(
-        (error) => error
-      );
-      state.products = products;
-      state.isFetching = false;
-    },
+    async getProducts(state, queries) {
+      const filters = queries?.filters || {};
+      const price = filters.price || {};
 
-    async getProductsOfCategory(state, category) {
       state.isFetching = true;
-      const { products } = await $fetch(`/api/${category}/getProducts`).catch(
-        (error) => error
-      );
-      state.products = products;
-      state.isFetching = false;
-    },
-
-    async searchProducts(state, searchQuery) {
-      state.isFetching = true;
-      const { products } = await $fetch(
-        `/api/searchProducts?query=${searchQuery}`
+      state.products = await $fetch(
+        `/api/getPaginatedAndFilteredProducts?page=${
+          queries?.page || 1
+        }&pageSize=${queries?.pageSize || 16}&minVal=${
+          price.min || ''
+        }&maxVal=${price.max || ''}&category=${filters.category || ''}`
       ).catch((error) => error);
-      state.products = products;
       state.isFetching = false;
     },
 
-    async getUsers(state) {
-      console.log(localStorage.getItem('users'));
-    },
-  },
+    async searchProducts(state, queries) {
+      const searchQuery = queries?.searchQuery || '';
+      const page = queries?.page || 1;
+      const pageSize = queries?.pageSize || 16;
 
-  actions: {
-    async addNamesToCategories() {
-      const categories = this.state.categories;
-      const categoryNames = await this.dispatch(
-        'generateCapitalizedCategoryNames'
-      );
-
-      const namedCategories = {};
-      for (let index = 0; index < categories.length; index++) {
-        namedCategories[index] = {
-          label: categoryNames[index],
-          value: categories[index],
-        };
-      }
-      this.state.categories = namedCategories;
-    },
-
-    async generateCapitalizedCategoryNames() {
-      const categories = this.state.categories;
-      return await Promise.all(
-        categories.map((category) => {
-          return category.split('-').join(' ').capitalize();
-        })
-      );
+      state.isFetching = true;
+      state.products = await $fetch(
+        `/api/searchProducts?searchQuery=${searchQuery}&page=${page}&pageSize=${pageSize}`
+      ).catch((error) => error);
+      state.isFetching = false;
     },
   },
 });
