@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/image', '@nuxtjs/tailwindcss', 'nuxt-rating'],
+  modules: ['@nuxt/image', '@nuxtjs/tailwindcss'],
   build: {
     transpile: ['vue-toastification'],
   },
