@@ -136,6 +136,7 @@
       <div class="w-2/5 max-sm:w-3/5 drop-shadow-2xl">
         <nuxt-img
           src="/tv.webp"
+          alt="Television Model"
           format="webp"
           quality="100"
           width="500"
@@ -177,6 +178,7 @@
           </div>
           <nuxt-img
             :src="card.image"
+            :alt="card.title"
             quality="80"
             format="webp"
             height="200"
