@@ -1,10 +1,24 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
 ## Setup
 
-Make sure to install the dependencies:
+### 1 - Clone the project
+
+Open a command line interface and type the below code to clone the project to your computer, or just download the files by clicking the green 'Code' button above the page.
+
+```bash
+git clone https://github.com/MehmetAliKOCAL/ClemtaCaseStudy.git
+```
+
+### 2 - Open the directory
+
+Get in the folder by typing below code to the cli you used to clone the project, or just simply drag and drop the folder to your favourite ide.
+
+```bash
+cd ClemtaCaseStudy
+```
+
+### 3 - Install the dependencies
+
+Make sure to install the dependencies with a package manager via a cli.
 
 ```bash
 # npm
@@ -17,9 +31,15 @@ pnpm install
 yarn install
 ```
 
-## Development Server
+### Adjust the environment variables
 
-Start the development server on `http://localhost:3000`:
+Open the project folder and remove the .example extension in the file named .env.example to set up the environment variables, that's all for setting up the project. I'm exposing the .env because I used a public fake API after all... If you want to use another API, you'll have to edit codes that are related to API in all files at /server/api/ and /store/ directories.
+
+.env.example ---> .env
+
+### Run the development server
+
+To start the project in dev mode, type below code to your cli and navigate to `http://localhost:3000`
 
 ```bash
 # npm
@@ -32,9 +52,9 @@ pnpm run dev
 yarn dev
 ```
 
-## Production
+### Production
 
-Build the application for production:
+To Build the project for testing or hosting, use the code below.
 
 ```bash
 # npm
@@ -47,7 +67,7 @@ pnpm run build
 yarn build
 ```
 
-Locally preview production build:
+To locally preview production build, use the code below.
 
 ```bash
 # npm
@@ -59,5 +79,3 @@ pnpm run preview
 # yarn
 yarn preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
