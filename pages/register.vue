@@ -25,6 +25,7 @@
 
   async function register() {
     if (isDataValid()) {
+      registrationData.cart = [];
       store.commit('register', registrationData);
       if (routeTo() !== '') {
         router.push(routeTo());
@@ -48,9 +49,7 @@
       class="p-14 max-md:px-10 max-sm:px-8 max-xs:px-6 flex flex-col gap-y-4 w-[500px] bg-white rounded-[4px] shadow-lg shadow-black/20"
     >
       <h1 class="self-center text-2xl font-black">Sign Up</h1>
-      <p class="text-xs mb-6 text-center">
-        Create an account and start shopping!
-      </p>
+      <p class="text-xs mb-6 text-center">Create an account and start shopping!</p>
       <div class="flex flex-col">
         <label
           for="firstName"

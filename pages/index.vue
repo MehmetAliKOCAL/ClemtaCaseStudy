@@ -88,9 +88,7 @@
     const itemCountOnPage = products()?.length;
     let itemsSkipped = defaultItemCountPerPage * (page.value - 1);
 
-    return `Displaying products between ${itemsSkipped} - ${
-      itemsSkipped + itemCountOnPage
-    }`;
+    return `Displaying products between ${itemsSkipped} - ${itemsSkipped + itemCountOnPage}`;
   }
 
   onBeforeMount(() => {
@@ -112,12 +110,11 @@
             Buy Best Products From All Over The World
           </h1>
           <p>
-            E-shippr offers fast and free shipping services all over the globe.
-            Also we provide you the right to return your product without even
-            pointing out a valid reason in 15 days. You didn't like the product?
-            It doesn't looks like in the pictures? Well, no problem. If the
-            product is not damaged after you receive it, you can return it! We
-            will keep your money for 15 days in case of any unwanted situations!
+            E-shippr offers fast and free shipping services all over the globe. Also we provide you
+            the right to return your product without even pointing out a valid reason in 15 days.
+            You didn't like the product? It doesn't looks like in the pictures? Well, no problem. If
+            the product is not damaged after you receive it, you can return it! We will keep your
+            money for 15 days in case of any unwanted situations!
           </p>
           <nav class="mt-10 space-x-6 flex max-md:justify-center">
             <NuxtLink
@@ -146,9 +143,7 @@
       </div>
     </section>
 
-    <div
-      class="z-[1] h-1 relative w-full bg-white flex justify-center items-center"
-    >
+    <div class="z-[1] h-1 relative w-full bg-white flex justify-center items-center">
       <NuxtLink
         to="#products"
         class="p-3 rounded-full shadow-md hover:scale-110 hover:shadow-black/20 active:scale-90 transition-all duration-200 bg-white"
@@ -161,15 +156,12 @@
       class="pt-20 px-24 max-xl:px-10 max-md:px-6 bg-gradient-to-b from-primary to-slate-100 space-y-28"
     >
       <div class="flex flex-col justify-center items-center space-y-6">
-        <h1 class="text-3xl font-bold text-white tracking-wide text-center">
-          How It Works
-        </h1>
+        <h1 class="text-3xl font-bold text-white tracking-wide text-center">How It Works</h1>
         <p class="text-white text-center font-medium max-w-[1200px]">
-          Welcome to our seamless e-commerce platform! Discover the easiest
-          shopping experience with just three simple steps: Browse our diverse
-          collection, add desired items to your cart, and securely checkout to
-          have your products delivered right to your doorstep. Shop smart and
-          hassle-free today!
+          Welcome to our seamless e-commerce platform! Discover the easiest shopping experience with
+          just three simple steps: Browse our diverse collection, add desired items to your cart,
+          and securely checkout to have your products delivered right to your doorstep. Shop smart
+          and hassle-free today!
         </p>
       </div>
       <div class="px- flex flex-wrap w-full justify-center gap-x-10 gap-y-14">
@@ -192,9 +184,7 @@
           />
           <div class="flex flex-col items-center">
             <h2>{{ card.title }}</h2>
-            <p
-              class="text-center font-semibold mt-4 leading-5.5 tracking-tight"
-            >
+            <p class="text-center font-semibold mt-4 leading-5.5 tracking-tight">
               {{ card.details }}
             </p>
           </div>
@@ -239,9 +229,7 @@
             <IconsSearch
               class="transition-all duration-300"
               :class="[
-                elementBeingHovered === 'search'
-                  ? 'stroke-gray-500'
-                  : ' stroke-gray-400/60',
+                elementBeingHovered === 'search' ? 'stroke-gray-500' : ' stroke-gray-400/60',
               ]"
             />
           </button>
@@ -252,9 +240,7 @@
             <IconsCancel
               class="transition-all duration-300"
               :class="[
-                elementBeingHovered === 'search'
-                  ? 'stroke-gray-500'
-                  : ' stroke-gray-400/60',
+                elementBeingHovered === 'search' ? 'stroke-gray-500' : ' stroke-gray-400/60',
               ]"
             />
           </button>
@@ -271,20 +257,14 @@
       <button
         @click="toggleFiltersMenu()"
         class="w-screen h-screen fixed top-0 left-0 bg-black/70 z-[2] transition-all duration-300 md:hidden"
-        :class="[
-          isFiltersMenuVisible ? 'visible opacity-100' : 'invisible opacity-0',
-        ]"
+        :class="[isFiltersMenuVisible ? 'visible opacity-100' : 'invisible opacity-0']"
       />
 
       <div class="mt-4 flex gap-x-8 text-gray-300 font-bold">
         <form
           @submit.prevent
           class="z-[3] transition-all duration-300 bg-slate-100 max-md:py-4 max-md:px-6 max-md:w-full max-md:fixed max-md:bottom-0 max-md:left-0 max-md:rounded-t-2xl"
-          :class="[
-            !isFiltersMenuVisible
-              ? 'max-md:translate-y-[120vh]'
-              : 'max-md:translate-y-0',
-          ]"
+          :class="[!isFiltersMenuVisible ? 'max-md:translate-y-[120vh]' : 'max-md:translate-y-0']"
         >
           <button
             @click="toggleFiltersMenu()"
@@ -293,9 +273,7 @@
             <IconsCancel class="scale-125" />
           </button>
           <h1 class="text-gray-400 max-md:text-gray-500">FILTER PRODUCTS</h1>
-          <hr
-            class="mt-3 mb-4 border-gray-200 max-md:border-primary/50 max-md:border-1"
-          />
+          <hr class="mt-3 mb-4 border-gray-200 max-md:border-primary/50 max-md:border-1" />
           <div
             class="pr-6 w-max max-md:w-full max-h-[600px] max-md:max-h-[calc(100vh-300px)] overflow-y-auto"
           >
@@ -317,9 +295,7 @@
                     @keypress.-.prevent
                     type="number"
                     :min="filters.price.min === 0 ? 1 : filters.price.min"
-                    :required="
-                      filters.price.min !== '' || filters.price.max !== ''
-                    "
+                    :required="filters.price.min !== '' || filters.price.max !== ''"
                     v-model="filters.price[price.toLowerCase()]"
                     :placeholder="price"
                     class="w-20 max-md:w-full py-1 px-2 rounded-md border-1 border-gray-300 outline-none placeholder:text-sm placeholder:font-medium text-gray-500 invalid:border-red-500 invalid:bg-red-100 transition-all duration-200"
@@ -332,9 +308,7 @@
 
             <div class="space-y-2">
               <h2 class="text-gray-500">Categories</h2>
-              <div
-                class="max-md:grid max-md:grid-cols-2 max-md:gap-y-1 max-md:gap-x-4"
-              >
+              <div class="max-md:grid max-md:grid-cols-2 max-md:gap-y-1 max-md:gap-x-4">
                 <ClientOnly>
                   <div
                     v-for="category in categories()"
@@ -360,9 +334,7 @@
             </div>
           </div>
 
-          <hr
-            class="mt-4 border-gray-200 max-md:border-primary/50 max-md:border-1"
-          />
+          <hr class="mt-4 border-gray-200 max-md:border-primary/50 max-md:border-1" />
 
           <button
             type="submit"
@@ -446,9 +418,7 @@
                   changePage(page);
                 "
                 :disabled="products().length < 12"
-                :class="[
-                  products().length < 12 && 'opacity-30 cursor-not-allowed',
-                ]"
+                :class="[products().length < 12 && 'opacity-30 cursor-not-allowed']"
               >
                 <IconsArrowRight class="w-6 px-3 box-content stroke-gray-500" />
               </button>
