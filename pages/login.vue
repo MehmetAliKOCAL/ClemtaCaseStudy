@@ -1,6 +1,9 @@
 <script setup>
+  const store = useStore();
   const toast = useToast();
-  const loginCookie = useCookie('userData');
+  const router = useRouter();
+  const userCookie = useCookie('userData');
+  const routeTo = () => store.state.routeTo;
   const showPassword = ref(false);
   const loginData = reactive({
     email: '',
@@ -9,14 +12,21 @@
 
   function isDataValid() {
     const isValid = !Object.values(loginData).includes('');
-    if (!isValid) toast.error('false data');
+    if (!isValid) toast.error('Please fill in all the fields');
     return isValid;
   }
 
   async function login() {
     if (isDataValid()) {
-      loginCookie.value = response;
-      useRouter().push('/');
+      store.commit('login', loginData);
+      if (store.state.updateUserCookie === true) {
+        userCookie.value = store.state.loggedInUser;
+        store.commit('updateUserCookieState', false);
+      }
+      if (routeTo() !== '') {
+        router.push(routeTo());
+        store.commit('updateRouteToState', '');
+      }
     }
   }
 
@@ -27,12 +37,12 @@
 
 <template>
   <main
-    class="px-6 bg-[url('/bgTessellation.webp')] min-w-screen min-h-screen flex justify-center items-center"
+    class="py-24 px-24 max-xl:px-10 max-md:px-6 bg-[url('/bgTessellation.webp')] min-w-screen min-h-screen flex justify-center items-center"
   >
     <form
       @submit.prevent
-      @keypress.enter="login()"
-      class="flex flex-col gap-y-4 w-[500px] bg-white p-14 rounded-[4px] shadow-lg shadow-black/20"
+      @keypress.enter.prevent="login()"
+      class="p-14 max-md:px-10 max-sm:px-8 max-xs:px-6 flex flex-col gap-y-4 w-[500px] bg-white rounded-[4px] shadow-lg shadow-black/20"
     >
       <h1 class="self-center text-2xl font-black">Login</h1>
       <p class="text-xs mb-6 text-center">
@@ -49,7 +59,7 @@
           type="email"
           autocomplete="email"
           v-model="loginData.email"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red-100 invalid:border-red-500 invalid:focus:border-red-500"
         />
       </div>
       <div class="flex flex-col">
@@ -63,7 +73,7 @@
           v-model="loginData.password"
           autocomplete="current-password"
           :type="showPassword ? 'text' : 'password'"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red"
         />
         <button
           @click="showPassword = !showPassword"

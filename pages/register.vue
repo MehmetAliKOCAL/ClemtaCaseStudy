@@ -1,6 +1,9 @@
 <script setup>
+  const store = useStore();
   const toast = useToast();
+  const router = useRouter();
   const showPassword = ref(false);
+  const routeTo = () => store.state.routeTo;
   const registrationData = reactive({
     name: '',
     surname: '',
@@ -13,18 +16,20 @@
     const isValid =
       !Object.values(registrationData).includes('') &&
       registrationData.password === passwordCorrection.value;
-    if (!isValid) toast.error('false data');
+    if (!isValid) {
+      toast.error('Please fill in all the fields');
+      toast.error('Make sure both password fields are the same');
+    }
     return isValid;
   }
 
   async function register() {
     if (isDataValid()) {
-      const response = await $fetch('/api/register', {
-        method: 'POST',
-        body: registrationData,
-      });
-
-      if (response === '') useRouter().push('/login');
+      store.commit('register', registrationData);
+      if (routeTo() !== '') {
+        router.push(routeTo());
+        store.commit('updateRouteToState', '');
+      }
     }
   }
 
@@ -35,12 +40,12 @@
 
 <template>
   <main
-    class="px-6 bg-[url('/bgTessellation.webp')] min-w-screen min-h-screen flex justify-center items-center"
+    class="py-24 px-24 max-xl:px-10 max-md:px-6 bg-[url('/bgTessellation.webp')] min-w-screen min-h-screen flex justify-center items-center"
   >
     <form
       @submit.prevent
-      @keypress.enter="register()"
-      class="flex flex-col gap-y-4 w-[500px] bg-white p-14 rounded-[4px] shadow-lg shadow-black/20"
+      @keypress.enter.prevent="register()"
+      class="p-14 max-md:px-10 max-sm:px-8 max-xs:px-6 flex flex-col gap-y-4 w-[500px] bg-white rounded-[4px] shadow-lg shadow-black/20"
     >
       <h1 class="self-center text-2xl font-black">Sign Up</h1>
       <p class="text-xs mb-6 text-center">
@@ -53,11 +58,12 @@
           >First Name</label
         >
         <input
+          required="true"
           id="firstName"
           type="text"
           autocomplete="name"
           v-model="registrationData.name"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red-100 invalid:border-red-500 invalid:focus:border-red-500"
         />
       </div>
       <div class="flex flex-col">
@@ -67,11 +73,12 @@
           >Last Name</label
         >
         <input
+          required="true"
           id="lastName"
           type="text"
           autocomplete="name"
           v-model="registrationData.surname"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red-100 invalid:border-red-500 invalid:focus:border-red-500"
         />
       </div>
       <div class="flex flex-col">
@@ -81,11 +88,12 @@
           >Email</label
         >
         <input
+          required="true"
           id="email"
           type="email"
           autocomplete="email"
           v-model="registrationData.email"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red-100 invalid:border-red-500 invalid:focus:border-red-500"
         />
       </div>
       <div class="flex flex-col">
@@ -95,11 +103,12 @@
           >Password</label
         >
         <input
+          required="true"
           id="password"
           autocomplete="new-password"
           v-model="registrationData.password"
           :type="showPassword ? 'text' : 'password'"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red-100 invalid:border-red-500 invalid:focus:border-red-500"
         />
       </div>
       <div class="flex flex-col">
@@ -109,11 +118,12 @@
           >Password Correction</label
         >
         <input
+          required="true"
           id="passwordCorrection"
           autocomplete="new-password"
           v-model="passwordCorrection"
           :type="showPassword ? 'text' : 'password'"
-          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70"
+          class="py-1 border-b-2 border-black/20 outline-none transition-colors duration-300 focus:border-primary bg-blue-100/70 invalid:bg-red-100 invalid:border-red-500 invalid:focus:border-red-500"
         />
         <button
           @click="showPassword = !showPassword"
