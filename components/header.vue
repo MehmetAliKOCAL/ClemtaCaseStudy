@@ -1,46 +1,69 @@
 <script setup>
+  const toast = useToast();
+  const store = useStore();
+  const userCookie = useCookie('userData');
   const showMobileMenu = ref(false);
+  const logOut = () => {
+    userCookie.value = undefined;
+    store.commit('updateLoggedInUserState', '');
+    toast.info('Logged Out');
+  };
   const navbarButtons = {
-    accountRelated: [
-      {
-        text: 'Login',
-        href: '/login',
-        iconName: 'login',
-      },
-      {
-        text: 'Register',
-        href: '/register',
-        iconName: 'signUp',
-      },
-    ],
+    accountRelated: {
+      notLoggedIn: [
+        {
+          text: 'Login',
+          href: '/login',
+          iconName: 'login',
+        },
+        {
+          text: 'Register',
+          href: '/register',
+          iconName: 'signUp',
+        },
+      ],
+      loggedIn: [
+        {
+          text: 'Cart',
+          function: logOut,
+          iconName: 'cart',
+        },
+        {
+          text: 'Wishlist',
+          function: logOut,
+          iconName: 'wishlist',
+        },
+        {
+          text: 'LogOut',
+          function: logOut,
+          iconName: 'logout',
+        },
+      ],
+    },
     productRelated: [
       {
         text: 'All Products',
-        href: '',
+        href: '/#products',
       },
       {
-        text: 'Catalog',
-        href: '',
+        text: 'Clothes',
+        href: '/#products',
       },
       {
-        text: 'Smartphones',
-        href: '',
+        text: 'Electronics',
+        href: '/#products',
       },
       {
-        text: 'Laptops',
-        href: '',
+        text: 'Furniture',
+        href: '/#products',
       },
       {
         text: 'Shoes',
-        href: '',
+        href: '/#products',
       },
       {
-        text: 'Handbags',
-        href: '',
-      },
-      {
-        text: 'Jeans',
-        href: '',
+        text: 'Others',
+        href: '/#products',
       },
     ],
   };
@@ -83,10 +106,14 @@
           >
         </div>
       </div>
+
       <div class="max-lg:hidden">
-        <div class="flex items-center justify-center shrink-0 space-x-6">
+        <div
+          v-if="userCookie === undefined"
+          class="flex items-center justify-center shrink-0 space-x-6"
+        >
           <NuxtLink
-            v-for="button in navbarButtons.accountRelated"
+            v-for="button in navbarButtons.accountRelated.notLoggedIn"
             :key="button"
             :to="button.href"
             class="w-20 flex items-center justify-center max-xl:w-8"
@@ -96,6 +123,24 @@
             />
             <p class="max-xl:hidden">{{ button.text }}</p></NuxtLink
           >
+        </div>
+
+        <div
+          v-else
+          class="flex items-center justify-center shrink-0 space-x-6"
+        >
+          <button
+            v-for="button in navbarButtons.accountRelated.loggedIn"
+            :key="button"
+            @click="button.function"
+            class="w-20 flex items-center justify-center max-xl:w-8"
+          >
+            <DynamicIconRenderer
+              :iconName="button.iconName"
+              class="mr-2"
+            />
+            <p class="max-xl:hidden">{{ button.text }}</p>
+          </button>
         </div>
       </div>
     </nav>
