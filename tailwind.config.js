@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        shimmer: 'shimmer 1s linear infinite',
+        shimmer: 'shimmer 500ms linear infinite',
       },
       keyframes: {
         shimmer: {
