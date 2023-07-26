@@ -41,9 +41,10 @@
 
 <template>
   <div>
+    <div class="w-full py-4 bg-primary/40" />
     <button
       @click="scrollTop"
-      class="w-full py-2 px-6 font-medium text-sm shadow-sm shadow-gray-400 bg-primary text-white hover:opacity-80 transition-all duration-200"
+      class="w-full py-2 px-6 font-medium text-sm shadow-sm shadow-gray-300 bg-primary text-white hover:opacity-80 transition-all duration-200"
       title="Scroll to top"
     >
       Back To Top
@@ -80,7 +81,7 @@
               <NuxtLink
                 v-for="category in categories()"
                 :key="category"
-                :to="'/categories/' + category.id"
+                to="/#products"
                 class="hover:text-primary transition-colors duration-200"
                 :title="category.name"
               >

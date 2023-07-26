@@ -1,9 +1,10 @@
 <script setup>
   const store = useStore();
 </script>
+
 <template>
   <div
-    class="w-screen h-screen bg-black/50 fixed top-0 transition-all duration-300 flex items-center justify-center z-20"
+    class="w-screen h-screen bg-black/60 fixed top-0 left-0 transition-all duration-300 flex items-center justify-center z-20"
     :class="[
       store.state.isFetching ? 'opacity-100 visible' : 'opacity-0 invisible',
     ]"
