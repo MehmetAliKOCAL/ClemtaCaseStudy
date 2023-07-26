@@ -6,7 +6,6 @@
 
 <template>
   <div>
-    <!-- <loadingIndicator /> -->
     <Header />
     <slot />
     <Footer />
