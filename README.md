@@ -1,3 +1,68 @@
+This is a pre-interview case study project given by a company for my front-end dev job application.
+Click [here](https://clemtacs.gwyndev.com) for live preview.
+
+## Requested Features and What I Did In Return
+
+R: Implement a homepage that displays a grid or list of products, including their images, titles, prices, and ratings.
+S: I made a landing page and added the [requested product list](https://clemtacs.gwyndev.com/#products) to it as a section.
+
+R: Fetch product data from an API (or use mock data) to populate the product listing
+S: Instead of using mock data, I chose to use [Platzi Fake Store API](https://fakeapi.platzi.com/) as a fake API.
+
+R: Include pagination functionality to limit the number of products displayed per page.
+S: In a production environment, doing filtering, sorting, paginating, and that type of stuff in the front end is a bad practice. Because for example, to paginate products in the front end, you have to fetch the whole data from the server and mutate it. Users probably won't even look at all the pages you will generate, but your website will slow down. Because of this, I used Platzi's filtering and paginating functions by sending additional queries while fetching the data.
+
+R: Implement filtering options to allow users to filter products based on categories, prices, or other relevant attributes.
+S: Again, I used Platzi for that and fetched the data pre-filtered in a way that the user wants. You select the filters you want, click on the 'Apply Filters' button, and voilà! filtered products will be fetched from the API and the page content will be replaced with the new data.
+
+R: Implement sorting options to allow users to sort products based on price, popularity, or other criteria.
+S: Since Platzi doesn't have a sorting feature, I didn't want to fetch whole data to be able to sort it in the front-end. Because if I do it like that, I would also have to do filtering and pagination too, that would slow down the page. And because of that, I did sorting in per page basis. For example, I fetch a single page of products from the server and then sort it in a way that the user wants in the front-end, then replaced the page content with it.
+
+R: Add a search feature to allow users to search for specific products based on keywords.
+S: This again requires fetching the whole data from the API to be able to do it in the front end, so I used Platzi's search feature.
+
+R: Create a product detail page that shows additional information about a selected product when clicked.
+S: Platzi doesn't offer that much data on products. Their name, price, a very short description, category, and that's all. No comments, no ratings. So I made some fake components giving fake info about shipment and the store etc. and completed the page with them. While inspecting products in [the products section of the index page](https://clemtacs.gwyndev.com/#products), if you click on a product, you'll be redirected to the page that shows the details.
+
+R: Include a "Add to Cart" button on the product detail page to allow users to add products to their shopping cart.
+S: I implemented the add to cart button in both [the products section of the index page](https://clemtacs.gwyndev.com/#products) and the product detail page.
+
+R: Implement client-side form validation for the "Add to Cart" functionality.
+S: Platzi doesn't offer a product quantity on product data. Therefore while adding one more quantity of the product to the user's cart, I checked if the user already has got 5 copies of it. And if so, the website will throw a toast error message to inform the user that the product stock is reached.
+
+R: Create a shopping cart page that displays the selected products, quantities, and total prices.
+S: [Done](https://clemtacs.gwyndev.com/cart). I also implemented a fake login/register feature with localStorage and Vuex to make the cart only available to logged-in users. After registering and logging in, add some products to your cart from [the products section of the index page](https://clemtacs.gwyndev.com/#products), and then check [the cart page](https://clemtacs.gwyndev.com/cart) to see your cart.
+
+R: Allow users to update quantities or remove products from the shopping cart.
+S: Done, you can increase or decrease the quantity or remove the product completely via the related buttons on [the cart page](https://clemtacs.gwyndev.com/cart).
+
+R: Use Vuex to manage the application state, including the product listing and shopping cart.
+S: Since Nuxt3 doesn't support Vuex natively anymore, I added Vuex as a plugin to the Nuxt and registered UseStore() composable to /composables/ directory for auto imports.
+
+R: Apply appropriate routing using Nuxt.js to navigate between different pages.
+S: I only used NuxtLink component and UseRouter() composable for routing.
+
+R: Make sure the UI is visually appealing and responsive across different devices.
+S: I got some problems about designing because the time given for project completion was limited, but I hope you like it.
+
+R: Use CSS or a CSS framework (e.g., Tailwind CSS, Bootstrap) to style the application.
+S: I used TailwindCSS.
+
+R: Write clear and concise documentation explaining how to set up and run the application.
+S: Check below. 👍
+
+Bonus R: Implement user authentication to allow users to create accounts and manage their orders.
+S: I implemented a login/register feature with Vuex and localStorage as I mentioned above.
+
+Bonus R: Add a wishlist feature to allow users to save products for future reference.
+S: I didn't have time for this...
+
+Bonus R: Implement a product review/rating system.
+S: Didn't have time for this too.
+
+Bonus R: Incorporate server-side rendering (SSR) using Nuxt.js for improved performance and SEO.
+S: Nuxt3 already comes with SSR activated, I also coded meta tags and open graph tags, and page titles for better SEO. Also tried to pay attention to semantic HTML structure as I can in this limited time.
+
 ## Setup
 
 ### 1 - Clone the project
