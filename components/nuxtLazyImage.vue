@@ -25,6 +25,11 @@
       required: false,
       default: '80',
     },
+    showSlug: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   });
 </script>
 
@@ -38,7 +43,7 @@
   >
     <div
       v-if="props.src === ''"
-      class="w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-gray-100 to-transparent"
+      class="w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-gray-200 to-transparent"
     />
     <nuxt-img
       v-else
