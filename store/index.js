@@ -14,8 +14,7 @@ export const store = createStore({
         sortBy: 'price',
         type: 'asc',
       },
-      loggedInUser: '',
-      updateUserCookie: false,
+      loggedInUser: null,
     };
   },
 
@@ -92,179 +91,153 @@ export const store = createStore({
       state.loggedInUser = newValue;
     },
 
-    updateUserCookieState(state, newValue) {
-      state.updateUserCookie = newValue;
-    },
-
-    register(state, userData) {
+    register(state, registrationData) {
+      let updatedUsersArray;
       const users = () => JSON.parse(localStorage.getItem('users'));
-      let isUserAlreadyRegistered = (user) => user.email === userData.email;
-      const showSuccessfullFeedback = () => {
+      let isUserAlreadyRegistered = (user) => user.email === registrationData.email;
+      function registerUser(store) {
+        localStorage.setItem('users', JSON.stringify(updatedUsersArray));
         toast.success("You've successfully registered!");
-        this.commit('updateRouteToState', '/login');
-      };
+        store.commit('updateRouteToState', '/login');
+      }
+      function throwAlreadyRegisteredError() {
+        toast.error('This e-mail is already in use');
+      }
 
       if (users() === null) {
-        localStorage.setItem('users', JSON.stringify([userData]));
-        showSuccessfullFeedback();
+        updatedUsersArray = [registrationData];
+        registerUser(this);
       } else if (users().some(isUserAlreadyRegistered)) {
-        toast.error('This e-mail is already in use');
+        throwAlreadyRegisteredError();
       } else {
-        localStorage.setItem('users', JSON.stringify([...users(), userData]));
-        showSuccessfullFeedback();
+        updatedUsersArray = [...users(), registrationData];
+        registerUser(this);
       }
     },
 
     login(state, loginData) {
       const users = () => JSON.parse(localStorage.getItem('users'));
-
-      if (users() === null) {
+      function throwNoUsersError(store) {
         toast.error('No account have been found, please register first');
-        this.commit('updateRouteToState', '/register');
-      } else {
-        users().forEach((user) => {
-          if (user.email === loginData.email && user.password === loginData.password) {
-            toast.success(`Welcome back, ${user.name}`);
-            this.commit('updateLoggedInUserState', user);
-            this.commit('updateUserCookieState', true);
-            this.commit('updateRouteToState', '/');
-          }
+        store.commit('updateRouteToState', '/register');
+      }
+      function login(store, user) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        store.commit('updateLoggedInUserState', user);
+        store.commit('updateRouteToState', '/');
+        toast.success(`Welcome back, ${user.name.capitalize()}!`);
+      }
+      function throwInvalidCredentialsError() {
+        toast.error('E-mail or password is incorrect');
+      }
+
+      if (users() === null) throwNoUsersError(this);
+      else {
+        const isLoginDataValid = users().some((user) => {
+          const isMatching = user.email === loginData.email && user.password === loginData.password;
+          if (isMatching) login(this, user);
+          return isMatching;
         });
-        if (state.loggedInUser === '') {
-          toast.error('E-mail or password is incorrect');
-        }
+        if (!isLoginDataValid) throwInvalidCredentialsError();
       }
     },
 
-    addToCart(state, payload) {
-      const users = () => JSON.parse(localStorage.getItem('users'));
-      function success(message, store) {
-        const updatedUsersArray = users().map((user) => {
-          if (user.email === payload.user.email) return payload.user;
-          else return user;
-        });
-        localStorage.setItem('users', JSON.stringify([...updatedUsersArray]));
-        store.commit('updateLoggedInUserState', payload.user);
-        store.commit('updateUserCookieState', true);
-        toast.success(message);
-      }
-      function doIfNotLoggedIn(store) {
-        toast.info('Please login to your account first');
+    manageAddingToCart(state, payload) {
+      let loggedInUser = payload.user;
+      function throwNotLoggedInError(store) {
+        toast.error('Please login to use cart');
         store.commit('updateRouteToState', '/login');
       }
-      function doIfUserHasNoCart(store) {
-        payload.user.cart = [{ details: payload.product, amount: payload.amount }];
-        success('Product added to the cart', store);
+      function addProductToCart(store) {
+        loggedInUser.cart.push({ details: payload.product, amount: payload.amount });
+        store.commit('saveCartChangesOnLocalStorage', {
+          message: 'Product added to the cart',
+          loggedInUser,
+        });
       }
-      function doIfUserDontHaveThisProduct(store) {
-        payload.user.cart.push({ details: payload.product, amount: payload.amount });
-        success('Product added to the cart', store);
+      function throwStockError() {
+        toast.error("Due to insufficient stock, you can't have more than 5 of this item");
       }
-      function doIfUserExceedingMaxStock() {
-        toast.error('Due to limited stock, you cannot have more than 5 of this item.');
-      }
-      function doIfUserAllEligible(store, itemIndex) {
-        payload.user.cart[itemIndex].amount++;
-        success('Added 1 more copy of the product to the cart', store);
+      function addOneQuantityToProduct(store, itemIndex) {
+        loggedInUser.cart[itemIndex].amount++;
+        store.commit('saveCartChangesOnLocalStorage', {
+          message: 'Added 1 more quantity to the cart',
+          loggedInUser,
+        });
       }
 
-      if (payload.user === undefined) {
-        doIfNotLoggedIn(this);
-      } else if (payload.user.cart === undefined) {
-        doIfUserHasNoCart(this);
+      if (payload.user === null) {
+        throwNotLoggedInError(this);
       } else {
-        let productOnCart = '';
-        payload.user.cart.forEach((product) => {
+        let productOnCart = null;
+        payload.user.cart.some((product) => {
           if (product.details.id === payload.product.id) {
             productOnCart = { details: product, index: payload.user.cart.indexOf(product) };
           }
         });
-        if (productOnCart === '') {
-          //implement only one quantity
-          //implement removing completely while removing one at a time if user have only one quantity
-          //implement removing at once
-          doIfUserDontHaveThisProduct(this);
+        if (productOnCart === null) {
+          addProductToCart(this);
         } else if (productOnCart.details.amount >= 5) {
-          doIfUserExceedingMaxStock();
+          throwStockError();
         } else {
-          doIfUserAllEligible(this, productOnCart.index);
+          addOneQuantityToProduct(this, productOnCart.index);
         }
       }
-      console.log(store.state.loggedInUser);
     },
 
-    removeFromCart(state, payload) {
-      function success(message, store) {
-        const updatedUsersArray = users().map((user) => {
-          if (user.email === payload.user.email) return payload.user;
-          else return user;
-        });
-        localStorage.setItem('users', JSON.stringify([...updatedUsersArray]));
-        store.commit('updateLoggedInUserState', payload.user);
-        store.commit('updateUserCookieState', true);
-        toast.success(message);
-      }
-      function removeProductFromCart(store, itemIndex) {
-        payload.user.cart.slice(itemIndex, 1);
-        success('Removed the product from cart', store);
-      }
-
-      if (payload.amount === 1 && productOnCart.amount) {
-      }
-      let productOnCart = '';
-      payload.user.cart.forEach((product) => {
-        if (product.details.id === payload.product.id) {
-          productOnCart = { details: product, index: payload.user.cart.indexOf(product) };
-        }
-      });
-    },
-
-    toggleProductOnWishlist(state, payload) {
-      const users = () => JSON.parse(localStorage.getItem('users'));
-      function success(message, store) {
-        const updatedUsersArray = users().map((user) => {
-          if (user.email === payload.user.email) return payload.user;
-          else return user;
-        });
-        localStorage.setItem('users', JSON.stringify([...updatedUsersArray]));
-        store.commit('updateLoggedInUserState', payload.user);
-        store.commit('updateUserCookieState', true);
-        toast.success(message);
-      }
-      function doIfNotLoggedIn(store) {
-        toast.info('Please login to your account first');
+    manageRemovingFromCart(state, payload) {
+      let loggedInUser = payload.user;
+      function throwNotLoggedInError(store) {
+        toast.error('Please login to use cart');
         store.commit('updateRouteToState', '/login');
       }
-      function doIfUserHasNoWishlist(store) {
-        payload.user.wishlist = [{ ...payload.product }];
-        success('Product added to the wishlist', store);
+      function throwAlreadyRemovedError() {
+        toast.info("This product already isn't in the cart");
       }
-      function doIfUserDontHaveThisProduct(store) {
-        payload.user.wishlist.push({ ...payload.product });
-        success('Product added to the wishlist', store);
+      function removeProductFromCart(store, itemIndex) {
+        loggedInUser.cart.splice(itemIndex, 1);
+        store.commit('saveCartChangesOnLocalStorage', {
+          message: 'Product successfully removed from the cart',
+          loggedInUser,
+        });
       }
-      function doIfUserHaveThisProduct(store, itemIndex) {
-        payload.user.wishlist.slice(itemIndex, 1);
-        success('Removed the product from wishlist', store);
+      function reduceQuantityOfProduct(store, itemIndex) {
+        loggedInUser.cart[itemIndex].amount--;
+        store.commit('saveCartChangesOnLocalStorage', {
+          message: 'Removed 1 quantity from the cart',
+          loggedInUser,
+        });
       }
 
-      if (payload.user === undefined) {
-        doIfNotLoggedIn(this);
-      } else if (payload.user.wishlist === undefined) {
-        doIfUserHasNoWishlist(this);
+      if (payload.user === null) {
+        throwNotLoggedInError(this);
       } else {
-        let wishlistedProduct = '';
-        payload.user.wishlist.forEach((product) => {
+        let productOnCart = null;
+        payload.user.cart.some((product) => {
           if (product.details.id === payload.product.id) {
-            wishlistedProduct = { details: product, index: payload.user.wishlist.indexOf(product) };
+            productOnCart = { details: product, index: payload.user.cart.indexOf(product) };
           }
         });
-        if (wishlistedProduct === '') {
-          doIfUserDontHaveThisProduct(this);
+        if (productOnCart === null) {
+          throwAlreadyRemovedError();
+        } else if (productOnCart.details.amount === 1 || payload.removeCompletely) {
+          removeProductFromCart(this, productOnCart.index);
         } else {
-          doIfUserHaveThisProduct(this, wishlistedProduct.index);
+          reduceQuantityOfProduct(this, productOnCart.index);
         }
       }
+    },
+
+    saveCartChangesOnLocalStorage(state, payload) {
+      const users = JSON.parse(localStorage.getItem('users'));
+      const updatedUsersArray = users.map((user) => {
+        if (user.email === payload.loggedInUser.email) return payload.loggedInUser;
+        else return user;
+      });
+      localStorage.setItem('users', JSON.stringify(updatedUsersArray));
+      localStorage.setItem('loggedInUser', JSON.stringify(payload.loggedInUser));
+      this.commit('updateLoggedInUserState', payload.loggedInUser);
+      toast.success(payload.message);
     },
   },
 });
