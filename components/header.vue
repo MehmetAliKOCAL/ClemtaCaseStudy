@@ -1,11 +1,12 @@
 <script setup>
   const toast = useToast();
   const store = useStore();
-  const userCookie = useCookie('userData');
+  const router = useRouter();
   const showMobileMenu = ref(false);
+  const loggedInUser = () => store.state.loggedInUser;
   const logOut = () => {
-    userCookie.value = undefined;
-    store.commit('updateLoggedInUserState', '');
+    store.commit('updateLoggedInUserState', null);
+    localStorage.removeItem('loggedInUser');
     toast.info('Logged Out');
   };
   const navbarButtons = {
@@ -25,12 +26,16 @@
       loggedIn: [
         {
           text: 'Cart',
-          function: logOut,
+          function: () => {
+            router.push('/cart');
+          },
           iconName: 'cart',
         },
         {
           text: 'Wishlist',
-          function: logOut,
+          function: () => {
+            router.push('/');
+          },
           iconName: 'wishlist',
         },
         {
@@ -108,40 +113,42 @@
       </div>
 
       <div class="max-lg:hidden">
-        <div
-          v-if="userCookie === undefined"
-          class="flex items-center justify-center shrink-0 space-x-6"
-        >
-          <NuxtLink
-            v-for="button in navbarButtons.accountRelated.notLoggedIn"
-            :key="button"
-            :to="button.href"
-            class="w-20 flex items-center justify-center max-xl:w-8"
-            ><DynamicIconRenderer
-              :iconName="button.iconName"
-              class="mr-2"
-            />
-            <p class="max-xl:hidden">{{ button.text }}</p></NuxtLink
+        <ClientOnly>
+          <div
+            v-if="loggedInUser() === null"
+            class="flex items-center justify-center shrink-0 space-x-6"
           >
-        </div>
+            <NuxtLink
+              v-for="button in navbarButtons.accountRelated.notLoggedIn"
+              :key="button"
+              :to="button.href"
+              class="w-20 flex items-center justify-center max-xl:w-8"
+              ><DynamicIconRenderer
+                :iconName="button.iconName"
+                class="mr-2"
+              />
+              <p class="max-xl:hidden">{{ button.text }}</p></NuxtLink
+            >
+          </div>
 
-        <div
-          v-else
-          class="flex items-center justify-center shrink-0 space-x-6"
-        >
-          <button
-            v-for="button in navbarButtons.accountRelated.loggedIn"
-            :key="button"
-            @click="button.function"
-            class="w-20 flex items-center justify-center max-xl:w-8"
+          <div
+            v-else
+            class="flex items-center justify-center shrink-0 space-x-6"
           >
-            <DynamicIconRenderer
-              :iconName="button.iconName"
-              class="mr-2"
-            />
-            <p class="max-xl:hidden">{{ button.text }}</p>
-          </button>
-        </div>
+            <button
+              v-for="button in navbarButtons.accountRelated.loggedIn"
+              :key="button"
+              @click="button.function"
+              class="w-20 flex items-center justify-center max-xl:w-8"
+            >
+              <DynamicIconRenderer
+                :iconName="button.iconName"
+                class="mr-2"
+              />
+              <p class="max-xl:hidden">{{ button.text }}</p>
+            </button>
+          </div>
+        </ClientOnly>
       </div>
     </nav>
 
@@ -158,15 +165,36 @@
           <IconsAccount class="stroke-gray-100/60 w-5 mr-2" />
           <h1 class="text-lg text-gray-100/70">Account</h1>
         </div>
-        <NuxtLink
-          v-for="button in navbarButtons.accountRelated"
-          :key="button"
-          :to="button.href"
-          @click="showMobileMenu = !showMobileMenu"
-          class="w-full hover:translate-x-3 active:translate-x-0 transition-all duration-200"
+        <div
+          v-if="loggedInUser() === null"
+          class="flex flex-col gap-y-6"
         >
-          {{ button.text }}</NuxtLink
+          <NuxtLink
+            v-for="button in navbarButtons.accountRelated.notLoggedIn"
+            :key="button"
+            :to="button.href"
+            @click="showMobileMenu = !showMobileMenu"
+            class="w-full hover:translate-x-3 active:translate-x-0 transition-all duration-200"
+          >
+            {{ button.text }}
+          </NuxtLink>
+        </div>
+        <div
+          v-else
+          class="flex flex-col gap-y-5"
         >
+          <button
+            v-for="button in navbarButtons.accountRelated.loggedIn"
+            :key="button"
+            @click="
+              button.function();
+              showMobileMenu = !showMobileMenu;
+            "
+            class="w-full block text-left hover:translate-x-3 active:translate-x-0 transition-all duration-200"
+          >
+            {{ button.text }}
+          </button>
+        </div>
         <div class="mt-10 border-b-2 border-gray-100/40 flex items-center pb-1">
           <IconsCart class="stroke-gray-100/60 w-5 mr-2" />
           <h1 class="text-lg text-gray-100/70">Products</h1>
