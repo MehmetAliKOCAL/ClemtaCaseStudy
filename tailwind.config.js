@@ -41,6 +41,10 @@ export default {
       },
       screens: {
         xs: '450px',
+        'sm/md': '680px',
+        'lg/xl': '1140px',
+        '3xl': '1650px',
+        '4xl': '1700px',
       },
     },
   },
