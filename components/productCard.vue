@@ -2,8 +2,6 @@
   const store = useStore();
   const router = useRouter();
   const routeTo = () => store.state.routeTo;
-  const updateUserCookie = () => store.state.updateUserCookie;
-  const userCookie = useCookie('userData');
   const isBeingHovered = ref(false);
   const props = defineProps({
     product: {
@@ -18,14 +16,11 @@
   });
 
   function addToCart(product, amount) {
-    store.commit('addToCart', { user: userCookie.value, product, amount });
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    store.commit('manageAddingToCart', { user, product, amount });
     if (routeTo() !== '') {
       router.push(routeTo());
       store.commit('updateRouteToState', '');
-    }
-    if (updateUserCookie()) {
-      userCookie.value = store.state.loggedInUser;
-      store.commit('updateUserCookieState', false);
     }
   }
 </script>
@@ -41,23 +36,17 @@
       <NuxtLink :to="`/productDetails/${product.id}`">
         <NuxtLazyImage
           :src="
-            props.product.images.length !== 0
-              ? props.product.images[0]
-              : '/dummyProductImage.webp'
+            props.product.images.length !== 0 ? props.product.images[0] : '/dummyProductImage.webp'
           "
           :alt="props.product.title"
           format="webp"
           quality="80"
           class="transition-all duration-300"
-          :class="[
-            isBeingHovered ? 'scale-125 opacity-70' : 'scale-100 opacity-100',
-          ]"
+          :class="[isBeingHovered ? 'scale-125 opacity-70' : 'scale-100 opacity-100']"
       /></NuxtLink>
       <div
         class="flex items-end justify-end transition-all duration-200 max-md:opacity-100 max-md:visible"
-        :class="[
-          isBeingHovered ? ' opacity-100 visible' : 'opacity-0 invisible',
-        ]"
+        :class="[isBeingHovered ? ' opacity-100 visible' : 'opacity-0 invisible']"
       >
         <button
           @click="addToCart(props.product, 1)"
@@ -87,9 +76,7 @@
         {{ props.product.category.name }}
       </p>
       <div class="flex justify-between items-center">
-        <p class="font-semibold text-sm text-gray-400 line-clamp-1">
-          5 In Stock
-        </p>
+        <p class="font-semibold text-sm text-gray-400 line-clamp-1">5 In Stock</p>
         <p class="text-gray-800">{{ '$' + props.product.price }}</p>
       </div>
     </NuxtLink>
