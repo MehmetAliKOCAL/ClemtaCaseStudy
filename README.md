@@ -1,6 +1,6 @@
 # Disclaimer
 
-The fake store API I used ([Platzi API](https://fakeapi.platzi.com/)) allows its users to save products and categories to their database. So the data I fetch to this website is user generated, therefore you may see some odd product names, images, or categories.
+The fake store API I used ([Platzi API](https://fakeapi.platzi.com/)) allows its users to save products and categories to their database. So the data I fetch to this website is user generated, therefore you may see some odd product names, broken images, or items and categories with no name.
 
 ## Table of Contents
 
@@ -24,16 +24,15 @@ The fake store API I used ([Platzi API](https://fakeapi.platzi.com/)) allows its
     - [15)](#15)
     - [16)](#16)
     - [17)](#17)
-    - [18)](#18)
     - [19)](#19)
     - [20)](#20)
-  - [Setup](#setup)
+  - [Project Setup](#project-setup)
     - [1 - Clone the project](#1---clone-the-project)
     - [2 - Open the directory](#2---open-the-directory)
     - [3 - Install the dependencies](#3---install-the-dependencies)
-    - [Adjust the environment variables](#adjust-the-environment-variables)
-    - [Run the development server](#run-the-development-server)
-    - [Production](#production)
+    - [4 - Adjust the environment variables](#4---adjust-the-environment-variables)
+    - [5 - Run the development server](#5---run-the-development-server)
+  - [Production](#production)
 
 This is a pre-interview case study project given by a company for my front-end dev job application.
 Click [here](https://clemtacs.gwyndev.com) for live preview.
@@ -142,9 +141,7 @@ Click [here](https://clemtacs.gwyndev.com) for live preview.
 
 **S:** I implemented a login/register feature with Vuex and localStorage as I mentioned above.
 
-### 18)
-
-> **Bonus R:** Add a wishlist feature to allow users to save products for future reference.
+> ### 18) **Bonus R:** Add a wishlist feature to allow users to save products for future reference.
 
 **S:** I didn't have time for this...
 
@@ -160,7 +157,7 @@ Click [here](https://clemtacs.gwyndev.com) for live preview.
 
 **S:** Nuxt3 already comes with SSR activated, I also coded meta tags and open graph tags, and page titles for better SEO. Also tried to pay attention to semantic HTML structure as I can in this limited time.
 
-## Setup
+## Project Setup
 
 ### 1 - Clone the project
 
@@ -193,13 +190,13 @@ pnpm install
 yarn install
 ```
 
-### Adjust the environment variables
+### 4 - Adjust the environment variables
 
 Open the project folder and remove the .example extension in the file named .env.example to set up the environment variables, that's all for setting up the project. I'm exposing the .env because I used a public fake API after all... If you want to use another API, you'll have to edit codes that are related to API in all files at /server/api/ and /store/ directories.
 
 .env.example ---> .env
 
-### Run the development server
+### 5 - Run the development server
 
 To start the project in dev mode, type below code to your cli and navigate to `http://localhost:3000`
 
@@ -214,7 +211,7 @@ pnpm run dev
 yarn dev
 ```
 
-### Production
+## Production
 
 To Build the project for testing or hosting, use the code below.
 
