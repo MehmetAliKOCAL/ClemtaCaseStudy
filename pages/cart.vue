@@ -84,7 +84,7 @@
 </script>
 
 <template>
-  <div class="py-24 px-24 max-xl:px-10 max-md:px-6">
+  <div class="py-24 px-24 max-xl:px-10 max-md:px-6 max-sm:px-0 max-sm:pt-10">
     <main
       v-if="loggedInUser() === null || loggedInUser()?.cart?.length === 0"
       class="px-40 py-20 max-md:px-6 w-fit max-md:w-full mx-auto flex flex-col justify-center items-center bg-gradient-to-b from-primary to-white from-50% to-50% rounded-md shadow text-gray-100"
@@ -115,7 +115,7 @@
       class="flex gap-x-4 max-xl:flex-col max-xl:gap-y-4"
     >
       <main
-        class="px-16 py-16 w-[70%] max-3xl:w-[65%] max-2xl:px-10 max-2xl:py-12 max-xl:w-full max-xl:px-14 max-xl:py-14 bg-white rounded-md shadow-md"
+        class="px-16 py-16 w-[70%] max-sm:px-6 max-sm:py-10 max-sm:rounded-none max-3xl:w-[65%] max-2xl:px-10 max-2xl:py-12 max-xl:w-full max-xl:px-14 max-xl:py-14 bg-white rounded-md shadow-md"
       >
         <div
           class="flex justify-between items-end max-sm:flex-col max-sm:items-start max-sm:gap-y-4"
@@ -222,10 +222,10 @@
       </main>
 
       <aside
-        class="w-[30%] max-3xl:w-[35%] max-xl:w-full max-xl:px-14 pb-10 h-fit px-10 bg-white shadow-md text-gray-700 rounded-md"
+        class="w-[30%] max-3xl:w-[35%] max-xl:w-full max-xl:px-14 max-sm:px-6 max-sm:rounded-none pb-10 h-fit px-10 bg-white shadow-md text-gray-700 rounded-md"
       >
         <h1
-          class="pt-16 pb-10 max-2xl:pt-12 max-2xl:pb-8 font-extrabold tracking-widest text-2xl border-b"
+          class="pt-16 pb-10 max-sm:pb-6 max-sm:pt-10 max-2xl:pt-12 max-2xl:pb-8 font-extrabold tracking-widest text-2xl border-b"
         >
           TOTAL
         </h1>
@@ -242,7 +242,7 @@
         </div>
         <select
           name="deliveryType"
-          class="pb-2 mb-6 w-full cursor-pointer outline-none border-b-2 border-gray-300 text-lg font-semibold text-gray-500"
+          class="pb-2 mb-6 w-full bg-transparent cursor-pointer outline-none border-b-2 border-gray-300 text-lg font-semibold text-gray-500"
         >
           <option value="fast">Fast Delivery [Free]</option>
           <option value="standard">Standard Delivery [Free]</option>
